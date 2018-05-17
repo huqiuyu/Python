@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{#{% set d = {'username':'jack', 'age':26} %}#}
+{#{% for key,value in d.items() %}#}
+{#    {{ key | capitalize }} : {{ value | capitalize }}#}
+{#    <br>#}
+{#{% endfor %}#}
+{##}
+{#{% with foo = 42 %}#}
+{#    foo = {{ foo }}#}
+{#{% endwith %}#}
+{#<br>#}
+{#{% with %}#}
+{#    {% set foo = 233 %}#}
+{#   foo =  {{ foo }}#}
+{#{% endwith %}#}
+
+
+{#{% for user in users %}#}
+{#    {% if loop.index is even %} {% continue %} {% endif %}#}
+{#    {{ user*10 }}<br>#}
+{#{% endfor %}#}
+{##}
+{##}
+{#{% for user in users %}#}
+{#    {% if user>5 %} {% break %} {% endif %}#}
+{#    {{ user*10 }}<br>#}
+{#{% endfor %}#}
+
+{#个性签名：{{ users }}#}
+{#<br>#}
+{#<script> alert("Hello")</script>#}
+{#<br>#}
+{#{% autoescape off %}#}
+{#    个性签名：{{ users | escape}}#}
+{#{% endautoescape  %}#}
+
+
+{#{% set i=1 %}#}
+{#{% set j=1 %}#}
+{##}
+{#{% for i in range(1,10) %}#}
+{#    {% for j in range(1,1+i) %}#}
+{#        {% set k=i*j %}#}
+{#        {{ i }} * {{ j }} = {{ "%-2d" | format( k ) }}#}
+{#    {% endfor %}#}
+{#    <br>#}
+{##}
+{#{% endfor %}#}
+
+{#{% macro input(name, value='', type='text', size=20) -%}#}
+{#    <input type="{{ type }}" name="{{ name }}" value="{{ value | e }}" size="{{ size }}">#}
+{#{% endmacro %}#}
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{#    {% if age | int >= 18 %}#}
+{#        Your are an adults#}
+{#    {% elif age | int >= 12 %}#}
+{#        Your are a teenage#}
+{#    {% elif age | int >= 6 %}#}
+{#        Your are a kid#}
+{#    {% else %}#}
+{#        Your are a baby#}
+{#    {% endif %}#}
+
+
+{#{% for key,value in user_info.items() %}#}
+{#    {{ loop.index0 }} : {{ key | capitalize }} : {{ value | capitalize}} <br>#}
+{#{% endfor %}#}
+
+
+{#<ul>#}
+{#{% for user in users if user.username | length > 2 %}#}
+{#    <li>{{ user.username|e }}</li>#}
+{#{% else %}#}
+{#    <li><em>no users found</em></li>#}
+{#{% endfor %}#}
+{#</ul>#}
+
+
+{#{% from 'temp.html' import input %}#}
+{#<p>{{ input('username') }}</p>#}
+{#<p>{{ input('password', type='password') }}</p>#}
+
+
+{% include "temp.html" %}
+
+
+
+
+</body>
+</html>
