@@ -1,0 +1,286 @@
+C:\Users\hqy\PycharmProjects\Flask Web>python manage.py server
+ * Serving Flask app "main" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+
+C:\Users\hqy\PycharmProjects\Flask Web>python manage.py shell
+
+In [1]: app
+Out[1]: <Flask 'main'>
+
+In [2]: db.create_all()
+C:\Users\hqy\AppData\Local\Programs\Python\Python36-32\lib\site-packages\pymysql\cursors.py:170: Warning: (136
+6, "Incorrect string value: '\\xD6\\xD0\\xB9\\xFA\\xB1\\xEA...' for column 'VARIABLE_VALUE' at row 497")
+  result = self._query(query)
+
+In [3]: user = User(username = 'Fake_name')
+
+In [4]: db.session.add(user)
+
+In [5]: db.session.commit()
+
+In [6]: user_list = []
+   ...: for i in range(15):
+   ...:     user_list.append(User(username=str(i)+' user'))
+   ...:
+
+In [7]: user_list
+Out[7]:
+[<User `0 user`>,
+ <User `1 user`>,
+ <User `2 user`>,
+ <User `3 user`>,
+ <User `4 user`>,
+ <User `5 user`>,
+ <User `6 user`>,
+ <User `7 user`>,
+ <User `8 user`>,
+ <User `9 user`>,
+ <User `10 user`>,
+ <User `11 user`>,
+ <User `12 user`>,
+ <User `13 user`>,
+ <User `14 user`>]
+
+In [8]: db.session.add_all(user_list)
+
+In [9]: db.session.commit()
+
+In [10]: User.query.all()
+Out[10]:
+[<User `Fake_name`>,
+ <User `0 user`>,
+ <User `1 user`>,
+ <User `2 user`>,
+ <User `3 user`>,
+ <User `4 user`>,
+ <User `5 user`>,
+ <User `6 user`>,
+ <User `7 user`>,
+ <User `8 user`>,
+ <User `9 user`>,
+ <User `10 user`>,
+ <User `11 user`>,
+ <User `12 user`>,
+ <User `13 user`>,
+ <User `14 user`>]
+
+In [11]: User.query.limit(5).all()
+Out[11]:
+[<User `Fake_name`>,
+ <User `0 user`>,
+ <User `1 user`>,
+ <User `2 user`>,
+ <User `3 user`>]
+
+In [12]: User.query.order_by(User.username).all()
+Out[12]:
+[<User `0 user`>,
+ <User `1 user`>,
+ <User `10 user`>,
+ <User `11 user`>,
+ <User `12 user`>,
+ <User `13 user`>,
+ <User `14 user`>,
+ <User `2 user`>,
+ <User `3 user`>,
+ <User `4 user`>,
+ <User `5 user`>,
+ <User `6 user`>,
+ <User `7 user`>,
+ <User `8 user`>,
+ <User `9 user`>,
+ <User `Fake_name`>]
+
+In [13]: User.query.order_by(User.username.desc()).all()
+Out[13]:
+[<User `Fake_name`>,
+ <User `9 user`>,
+ <User `8 user`>,
+ <User `7 user`>,
+ <User `6 user`>,
+ <User `5 user`>,
+ <User `4 user`>,
+ <User `3 user`>,
+ <User `2 user`>,
+ <User `14 user`>,
+ <User `13 user`>,
+ <User `12 user`>,
+ <User `11 user`>,
+ <User `10 user`>,
+ <User `1 user`>,
+ <User `0 user`>]
+
+In [14]: User.query.first()
+Out[14]: <User `Fake_name`>
+
+In [15]: User.query.get(1)
+Out[15]: <User `Fake_name`>
+
+In [16]: User.query.order_by(User.username.desc()).limit(3).all()
+Out[16]: [<User `Fake_name`>, <User `9 user`>, <User `8 user`>]
+
+In [17]: page = User.query.paginate(2,10)
+
+In [18]: page
+Out[18]: <flask_sqlalchemy.Pagination at 0x7f2b050>
+
+In [19]: page.items
+Out[19]:
+[<User `9 user`>,
+ <User `10 user`>,
+ <User `11 user`>,
+ <User `12 user`>,
+ <User `13 user`>,
+ <User `14 user`>]
+
+In [20]: page.page
+Out[20]: 2
+
+In [21]: page.pages
+Out[21]: 2
+
+In [22]: User.query.filter_by(User.username='Fake_name').all()
+  File "<ipython-input-22-1c5b73e2fcee>", line 1
+    User.query.filter_by(User.username='Fake_name').all()
+                        ^
+SyntaxError: keyword can't be an expression
+
+
+In [23]: User.query.filter_by(username='Fake_name').all()
+Out[23]: [<User `Fake_name`>]
+
+In [24]: User.query.filter_by(User.username='Fake_name').all()
+  File "<ipython-input-24-1c5b73e2fcee>", line 1
+    User.query.filter_by(User.username='Fake_name').all()
+                        ^
+SyntaxError: keyword can't be an expression
+
+
+In [25]: User.query.filter(User.id > 12).all()
+Out[25]: [<User `11 user`>, <User `12 user`>, <User `13 user`>, <User `14 user`>]
+
+In [26]: User.query.filter(id > 12).all()
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-26-b317c97c28b4> in <module>()
+----> 1 User.query.filter(id > 12).all()
+
+TypeError: '>' not supported between instances of 'builtin_function_or_method' and 'int'
+
+In [27]: User.query.filter_by(username='Fake_name').update({'password':'test'})
+Out[27]: 1
+
+In [28]: db.session.commit()
+
+In [29]: u = User.query.filter_by(username='Fake_name').first()
+
+In [30]: u.username = 'newname'
+
+In [31]: db.session.commit()
+
+In [32]: u = User.query.filter(id > 12).all()
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-32-1366c745342c> in <module>()
+----> 1 u = User.query.filter(id > 12).all()
+
+TypeError: '>' not supported between instances of 'builtin_function_or_method' and 'int'
+
+In [33]: u = User.query.filter(User.id > 12).all()
+
+In [34]: db.session.delete(u)
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+~\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sqlalchemy\orm\session.py in delete(self, instan
+ce)
+   1807         try:
+-> 1808             state = attributes.instance_state(instance)
+   1809         except exc.NO_STATE:
+
+AttributeError: 'list' object has no attribute '_sa_instance_state'
+
+During handling of the above exception, another exception occurred:
+
+UnmappedInstanceError                     Traceback (most recent call last)
+<ipython-input-34-db29c17b1e14> in <module>()
+----> 1 db.session.delete(u)
+
+~\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sqlalchemy\orm\scoping.py in do(self, *args, **k
+wargs)
+    151 def instrument(name):
+    152     def do(self, *args, **kwargs):
+--> 153         return getattr(self.registry(), name)(*args, **kwargs)
+    154     return do
+    155
+
+~\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sqlalchemy\orm\session.py in delete(self, instan
+ce)
+   1808             state = attributes.instance_state(instance)
+   1809         except exc.NO_STATE:
+-> 1810             raise exc.UnmappedInstanceError(instance)
+   1811
+   1812         self._delete_impl(state, instance, head=True)
+
+UnmappedInstanceError: Class 'builtins.list' is not mapped
+
+In [35]: db.session.delete(u[0])
+
+In [36]: db.session.commit()
+
+
+
+
+
+
+Microsoft Windows [版本 10.0.16299.431]
+(c) 2017 Microsoft Corporation。保留所有权利。
+
+C:\Users\hqy\PycharmProjects\Flask Web>python manage.py server
+ * Serving Flask app "main" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+
+C:\Users\hqy\PycharmProjects\Flask Web>python manage.py shell
+
+In [1]: app
+Out[1]: <Flask 'main'>
+
+In [2]: from sqlalchemy.sql.expression import not_, or_, in_
+---------------------------------------------------------------------------
+ImportError                               Traceback (most recent call last)
+<ipython-input-2-3af9857dc8e7> in <module>()
+----> 1 from sqlalchemy.sql.expression import not_, or_, in_
+
+ImportError: cannot import name 'in_'
+
+In [3]: from sqlalchemy.sql.expression import not_, or_
+
+In [4]: user = User.query.filter(
+   ...: User.username.in_(['newname']),User.password != None).all()
+C:\Users\hqy\AppData\Local\Programs\Python\Python36-32\lib\site-packages\pymysql\cursors.py:170: Warning: (1366, "Incorrect strin
+g value: '\\xD6\\xD0\\xB9\\xFA\\xB1\\xEA...' for column 'VARIABLE_VALUE' at row 497")
+  result = self._query(query)
+
+In [5]: user
+Out[5]: [<User `newname`>]
+
+In [6]: user.password
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-6-9456b1ab438a> in <module>()
+----> 1 user.password
+
+AttributeError: 'list' object has no attribute 'password'
+
+In [7]: user[0].password
+Out[7]: 'test'
+
+In [8]: User.query.filter(not_(User.password == None)).all()
+Out[8]: [<User `newname`>]
