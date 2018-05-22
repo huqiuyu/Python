@@ -8,16 +8,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-
-
 class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(255))
     password = db.Column(db.String(255))
     posts = db.relationship(
         'Post',
-        backref = 'user',
-        lazy = 'dynamic'
+        backref='user',
+        lazy='dynamic'
     )
 
     def __init__(self, username):
@@ -41,10 +39,9 @@ class Post(db.Model):
         return "<Post `{}`>".format(self.title)
 
 
-
 @app.route('/')
 def hello_world():
-    return render_template('child.html')
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
